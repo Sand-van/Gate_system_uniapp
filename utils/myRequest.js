@@ -30,7 +30,7 @@ export default function myRequest(param) {
   var url = param.url,
     method = param.method,
     data = param.data || {},
-    hideLoading = param.hideLoading || false,
+    // hideLoading = param.hideLoading || false,
     header = {},
 
     //拼接完整请求地址
@@ -43,12 +43,14 @@ export default function myRequest(param) {
     if (method == "GET") {
       header = {
         'token': uni.getStorageSync('token'),
-        'content-type': "application/x-www-form-urlencoded"
+        'content-type': "application/x-www-form-urlencoded",
+        'Access-Control-Allow-Origin': "http://127.0.0.1:8080"
       };
     } else {
       header = {
         'token': uni.getStorageSync('token'),
-        'content-type': "application/json"
+        'content-type': "application/json",
+        'Access-Control-Allow-Origin': "http://127.0.0.1:8080"
       };
     }
   }
