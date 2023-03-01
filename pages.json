@@ -4,7 +4,7 @@
       "path": "pages/deviceManage/deviceManage",
       "style": {
         "navigationBarTitleText": "设备管理",
-        "enablePullDownRefresh": false
+        "enablePullDownRefresh": true
       }
     },
     {
@@ -18,14 +18,14 @@
       "path": "pages/applyManage/applyManage",
       "style": {
         "navigationBarTitleText": "申请管理",
-        "enablePullDownRefresh": false
+        "enablePullDownRefresh": true
       }
     },
     {
       "path": "pages/userManage/userManage",
       "style": {
         "navigationBarTitleText": "用户管理",
-        "enablePullDownRefresh": false
+        "enablePullDownRefresh": true
       }
     },
     {
@@ -34,11 +34,36 @@
         "navigationBarTitleText": "登录",
         "enablePullDownRefresh": false
       }
-    }, 
+    },
     {
       "path": "pages/me/me",
       "style": {
         "navigationBarTitleText": "我的",
+        "enablePullDownRefresh": true
+      }
+    }, {
+      "path": "pages/userDetail/userDetail",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": true
+      }
+
+    }, {
+      "path": "pages/userChange/userChange",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "pages/deviceDetail/deviceDetail",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": true
+      }
+    }, {
+      "path": "pages/applyAdd/applyAdd",
+      "style": {
+        "navigationBarTitleText": "",
         "enablePullDownRefresh": false
       }
     }
@@ -51,8 +76,7 @@
   },
   "uniIdRouter": {},
   "tabBar": {
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/deviceManage/deviceManage",
         "text": "设备管理",
         "iconPath": "static/icon/deviceManage.png",

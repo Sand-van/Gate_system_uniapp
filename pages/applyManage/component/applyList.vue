@@ -1,29 +1,28 @@
 <template>
   <view>
-    <uni-search-bar @confirm="getPage" v-model="searchDeviceName" @cancel="clearSearch"
-      placeholder="请输入要搜索的设备名" @clear="clearSearch">
+    <uni-search-bar @confirm="getPage" v-model="searchDeviceName" @cancel="clearSearch" placeholder="请输入要搜索的设备名"
+      @clear="clearSearch">
     </uni-search-bar>
-  
+
     <uni-table ref="table" border stripe type="selection" emptyText="暂无数据">
       <uni-tr>
         <uni-th align="center">设备名</uni-th>
-        <uni-th align="center">ip</uni-th>
-        <uni-th align="center">状态</uni-th>
+        <uni-th align="center">开始时间</uni-th>
+        <uni-th align="center">结束时间</uni-th>
         <uni-th align="center">操作</uni-th>
       </uni-tr>
-      <uni-tr v-for="(item, index) in deviceDataList" :key="index">
+      <uni-tr v-for="(item, index) in applyList" :key="index">
         <uni-td>
-          <view class="name">{{ item.name }}</view>
+          {{ item.deviceName }}
         </uni-td>
-        <uni-td>{{ item.ip }}</uni-td>
+        <uni-td>
+          {{ item.beginTime }}
+        </uni-td>
         <uni-td align="center">
-          <uni-tag v-if="item.status == '1'" text="在线" type="success" />
-          <uni-tag v-else-if="item.status == '2'" text="离线" type="error" />
-          <uni-tag v-else-if="item.status == '3'" text="弃用" type="default" />
+          {{ item.endTime }}
         </uni-td>
         <uni-td align="center">
           <view class="uni-group">
-            <button class="uni-button" size="mini" type="primary" @click="jumpToDeviceDetail(item.id)">详情</button>
             <button class="uni-button" size="mini" type="warn">删除</button>
           </view>
         </uni-td>
@@ -40,14 +39,13 @@
     mounted() {
       this.getPage()
     },
-    
     data() {
       return {
         page: 1,
         pageSize: 10,
         total: '',
         searchDeviceName: '',
-        deviceDataList: []
+        applyList: []
       }
     },
     methods: {
@@ -55,12 +53,11 @@
         const pageInfo = {
           page: this.page,
           pageSize: this.pageSize,
-          queryUserId: '',
           searchDeviceName: this.searchDeviceName,
         }
-        let res = await this.$API.deviceManage.getDevicePage(pageInfo)
+        let res = await this.$API.userApply.getOwnApplyPage(pageInfo)
         this.total = res.data.total
-        this.deviceDataList = res.data.records
+        this.applyList = res.data.records
       },
       getPageByPagination(e) {
         this.page = e.current
@@ -70,11 +67,6 @@
         this.searchUserName = ''
         this.getPage()
       },
-      jumpToDeviceDetail( deviceId ) {
-        uni.navigateTo({
-          url: '/pages/deviceDetail/deviceDetail?deviceId='+deviceId
-        })
-      }
     },
   }
 </script>

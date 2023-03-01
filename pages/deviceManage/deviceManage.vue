@@ -9,12 +9,13 @@
     </uni-card>
 
     <view v-show="showModeSelect == 1">
-      <superAdminManageDeviceList v-if="loginUserType=='3'"></superAdminManageDeviceList>
-      <adminManageDeviceList v-if="loginUserType == '2'"></adminManageDeviceList>
+      <superAdminManageDeviceList v-if="loginUserType=='3'" ref="superAdminManageDeviceList">
+      </superAdminManageDeviceList>
+      <adminManageDeviceList v-if="loginUserType == '2'" ref="adminManageDeviceList"></adminManageDeviceList>
     </view>
 
     <view v-show="showModeSelect == 0">
-      <userAuthorityDeviceList></userAuthorityDeviceList>
+      <userAuthorityDeviceList ref="userAuthorityDeviceList"></userAuthorityDeviceList>
     </view>
   </view>
 </template>
@@ -32,6 +33,17 @@
     },
     mounted() {
       this.loginUserType = uni.getStorageSync('userType')
+    },
+    onPullDownRefresh() {
+      if (this.loginUserType == 3) {
+        this.$refs.superAdminManageDeviceList.getPage()
+      } else if (this.loginUserType == 2){
+        this.$refs.adminManageDeviceList.getPage()
+      }
+      this.$refs.userAuthorityDeviceList.getPage()
+      setTimeout(function() {
+        uni.stopPullDownRefresh()
+      }, 1000)
     },
     data() {
       return {

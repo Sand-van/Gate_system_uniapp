@@ -45,7 +45,7 @@ export function getApplyPage(pageInfo) {
       'pageSize': pageInfo.pageSize,
       'queryName': pageInfo.searchUserName,
       'queryAccount': pageInfo.searchUserAccount,
-      'queryDevice': pageInfo.SearchDeviceName
+      'queryDevice': pageInfo.searchDeviceName
     }
   })
 }
