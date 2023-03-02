@@ -1,30 +1,31 @@
 <template>
   <view>
-    <uni-card>
-      <view class="uni-px-5">
-        <uni-data-checkbox style="" mode="tag" v-model="showModeSelect" :localdata="showMode"></uni-data-checkbox>
+    <scroll-view scroll-x="true">
+      <view v-for="(item,index) in showModeList" :key="item.id" class="tabName" :data-current="index" @click="onTabTap">
+        <text class="tabName_text" :class="showModeSelect == index?'active_text':''">{{item.name}}</text>
       </view>
-    </uni-card>
+    </scroll-view>
+    
     <view v-show="showModeSelect == 0">
       <deviceInfo :deviceId='deviceId' ref="deviceInfo"></deviceInfo>
     </view>
     <view v-show="showModeSelect == 1">
-      <deviceManager :deviceId='deviceId' ref="deviceManager"></deviceManager>
+      <deviceManagerTable :deviceId='deviceId' ref="deviceManagerTable"></deviceManagerTable>
     </view>
     <view v-show="showModeSelect == 2">
-      <devicePermission :deviceId='deviceId' ref="devicePermission"></devicePermission>
+      <devicePermissionTable :deviceId='deviceId' ref="devicePermissionTable"></devicePermissionTable>
     </view>
     <view v-show="showModeSelect == 3">
-      <deviceRecords :deviceId='deviceId' ref="deviceRecords"></deviceRecords>
+      <deviceRecordsTable :deviceId='deviceId' ref="deviceRecordsTable"></deviceRecordsTable>
     </view>
   </view>
 </template>
 
 <script>
   import deviceInfo from './component/deviceInfo.vue'
-  import deviceManager from './component/deviceManager.vue'
-  import deviceRecords from './component/deviceRecords.vue'
-  import devicePermission from './component/devicePermission.vue'
+  import deviceManagerTable from './component/deviceManagerTable.vue'
+  import deviceRecordsTable from './component/deviceRecordsTable.vue'
+  import devicePermissionTable from './component/devicePermissionTable.vue'
 
   export default {
     onLoad: function(option) {
@@ -32,9 +33,9 @@
     },
     onPullDownRefresh() {
       this.$refs.deviceInfo.getDeviceInfo(this.deviceId)
-      this.$refs.deviceManager.getPage()
-      this.$refs.devicePermission.getPage()
-      this.$refs.deviceRecords.getPage()
+      this.$refs.deviceManagerTable.getPage()
+      this.$refs.devicePermissionTable.getPage()
+      this.$refs.deviceRecordsTable.getPage()
       
       setTimeout(function() {
         uni.stopPullDownRefresh()
@@ -43,37 +44,76 @@
     data() {
       return {
         deviceId: '',
-        showMode: [{
-          text: '信息',
-          value: 0
+        showModeList: [{
+          name: '信息',
+          id: 0
         }, {
-          text: '管理员',
-          value: 1
+          name: '管理员',
+          id: 1
         }, {
-          text: '权限',
-          value: 2
+          name: '权限',
+          id: 2
         }, {
-          text: '通行记录',
-          value: 3
+          name: '通行记录',
+          id: 3
         }],
 
         showModeSelect: 0,
       }
     },
     methods: {
-      beng() {
-
+      onTabTap(e) {
+        let index = e.target.dataset.current || e.currentTarget.dataset.current;
+        this.switchTab(index);
+      },
+      switchTab(index) {
+        if (this.showModeSelect == index) {
+          return
+        }
+        this.showModeSelect = index;
       },
     },
     components: {
       deviceInfo,
-      deviceManager,
-      deviceRecords,
-      devicePermission
+      deviceManagerTable,
+      deviceRecordsTable,
+      devicePermissionTable
     }
   }
 </script>
 
-<style>
+<style lang="scss">
+  .uni-px-5 {
+    padding-left: 10rpx;
+    padding-right: 10rpx;
+  }
 
+  #tab {
+    width: 100%;
+    display: flex;
+  }
+
+  .tabName {
+    text-align: center;
+    width: 25%;
+    display: inline-block;
+    height: 80rpx;
+    line-height: 80rpx;
+    white-space: nowrap;
+  }
+
+  .tabName_text {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .active_text {
+    background-color: $uni-primary;
+    color: #FFFFFF;
+  }
+
+  #tabContent {
+    width: 100%;
+  }
 </style>

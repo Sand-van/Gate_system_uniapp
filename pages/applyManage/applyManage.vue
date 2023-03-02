@@ -1,26 +1,26 @@
 <template>
   <view>
-    <uni-card>
-      <view class="uni-px-5">
-        <uni-data-checkbox style="" mode="tag" v-model="showModeSelect" :localdata="showMode"></uni-data-checkbox>
+    <scroll-view scroll-x="true">
+      <view v-for="(item,index) in showModeList" :key="item.id" class="tabName" :data-current="index" @click="onTabTap">
+        <text class="tabName_text" :class="showModeSelect == index?'active_text':''">{{item.name}}</text>
       </view>
-    </uni-card>
+    </scroll-view>
 
     <view v-show="showModeSelect == 0">
-      <applyList></applyList>
+      <applyTable></applyTable>
       <uni-fab horizontal="right" vertical="bottom" @trigger="addApply"></uni-fab>
     </view>
 
     <view v-show="showModeSelect == 1">
-      <applyManageList></applyManageList>
+      <applyManageTable></applyManageTable>
     </view>
 
   </view>
 </template>
 
 <script>
-  import applyList from './component/applyList.vue'
-  import applyManageList from './component/applyManageList.vue'
+  import applyTable from './component/applyTable.vue'
+  import applyManageTable from './component/applyManageTable.vue'
 
   export default {
     mounted() {
@@ -28,12 +28,12 @@
     },
     data() {
       return {
-        showMode: [{
-          text: '我的申请',
-          value: 0
+        showModeList: [{
+          name: '我的申请',
+          id: 0
         }, {
-          text: '我管理的申请',
-          value: 1
+          name: '我管理的申请',
+          id: 1
         }],
 
         showModeSelect: 0,
@@ -42,19 +42,58 @@
     },
     methods: {
       addApply() {
-        
-      }
+
+      },
+      onTabTap(e) {
+        let index = e.target.dataset.current || e.currentTarget.dataset.current;
+        this.switchTab(index);
+      },
+      switchTab(index) {
+        if (this.showModeSelect == index) {
+          return
+        }
+        this.showModeSelect = index;
+      },
     },
     components: {
-      applyList,
-      applyManageList
+      applyTable,
+      applyManageTable
     }
   }
 </script>
 
-<style>
+<style lang="scss">
   .uni-px-5 {
     padding-left: 10rpx;
     padding-right: 10rpx;
+  }
+
+  #tab {
+    width: 100%;
+    display: flex;
+  }
+
+  .tabName {
+    text-align: center;
+    width: 30%;
+    display: inline-block;
+    height: 80rpx;
+    line-height: 80rpx;
+    white-space: nowrap;
+  }
+
+  .tabName_text {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .active_text {
+    background-color: $uni-primary;
+    color: #FFFFFF;
+  }
+
+  #tabContent {
+    width: 100%;
   }
 </style>
