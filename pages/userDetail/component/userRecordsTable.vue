@@ -1,13 +1,13 @@
 <template>
   <view>
-    <uni-search-bar @confirm="getPage" v-model="searchUserName" @cancel="clearSearch" placeholder="请输入要搜索的用户名"
+    <uni-search-bar @confirm="getPage" v-model="searchDeviceName" @cancel="clearSearch" placeholder="请输入要搜索的用户名"
       @clear="clearSearch">
     </uni-search-bar>
 
     <uni-table ref="table" border stripe emptyText="暂无数据">
       <uni-tr>
         <uni-th align="center">通行时间</uni-th>
-        <uni-th align="center">用户名</uni-th>
+        <uni-th align="center">设备名</uni-th>
         <uni-th align="center">卡id</uni-th>
         <uni-th align="center">结果</uni-th>
       </uni-tr>
@@ -15,7 +15,7 @@
         <uni-td>
           <view class="name">{{ item.permissionTime }}</view>
         </uni-td>
-        <uni-td>{{ item.userName }}</uni-td>
+        <uni-td>{{ item.deviceName }}</uni-td>
         <uni-td>{{ item.cardId }}</uni-td>
         <uni-td align="center">
           <uni-tag v-if="item.isSuccess == '0'" text="非法访问" type="error" />
@@ -31,7 +31,7 @@
 
 <script>
   export default {
-    props: ['deviceId'],
+    props: ['userId'],
     mounted() {
       this.getPage()
     },
@@ -40,7 +40,7 @@
         page: 1,
         pageSize: 10,
         total: '',
-        searchUserName: '',
+        searchDeviceName: '',
         recordList: []
       }
     },
@@ -49,11 +49,11 @@
         const pageInfo = {
           'page': this.page,
           'pageSize': this.pageSize,
-          'queryUserId': '',
-          'queryDeviceId': this.deviceId,
-          'searchUserName': this.searchUserName,
+          'queryUserId': this.userId,
+          'queryDeviceId': '',
+          'searchUserName': '',
           'searchUserAccount': '',
-          'queryDeviceName': '',
+          'searchDeviceName': this.searchDeviceName,
           'beginTime': '',
           'endTime': '',
         }

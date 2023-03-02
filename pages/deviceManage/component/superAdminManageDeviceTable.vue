@@ -1,9 +1,9 @@
 <template>
   <view>
-    <uni-search-bar @confirm="getPage" v-model="searchDeviceName" @cancel="clearSearch"
-      placeholder="请输入要搜索的设备名" @clear="clearSearch">
+    <uni-search-bar @confirm="getPage" v-model="searchDeviceName" @cancel="clearSearch" placeholder="请输入要搜索的设备名"
+      @clear="clearSearch">
     </uni-search-bar>
-  
+
     <uni-table ref="table" border stripe type="selection" emptyText="暂无数据">
       <uni-tr>
         <uni-th align="center">设备名</uni-th>
@@ -40,7 +40,7 @@
     mounted() {
       this.getPage()
     },
-    
+
     data() {
       return {
         page: 1,
@@ -70,9 +70,9 @@
         this.searchUserName = ''
         this.getPage()
       },
-      jumpToDeviceDetail( deviceId ) {
+      jumpToDeviceDetail(deviceId) {
         uni.navigateTo({
-          url: '/pages/deviceDetail/deviceDetail?deviceId='+deviceId
+          url: '/pages/deviceDetail/deviceDetail?deviceId=' + deviceId
         })
       }
     },

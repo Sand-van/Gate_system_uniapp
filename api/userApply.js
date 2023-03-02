@@ -20,11 +20,8 @@ export function addApply(userApplyToAdd) {
 
 export function deleteApply(userApplyId) {
   return myRequest({
-    url: '/user/apply/deleteById',
+    url: '/user/apply/deleteById'+'?userApplyId='+userApplyId,
     method: 'delete',
-    data: {
-      'userApplyId': userApplyId
-    }
   })
 }
 

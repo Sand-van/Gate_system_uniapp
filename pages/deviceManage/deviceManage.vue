@@ -117,7 +117,7 @@
 
   .tabName {
     text-align: center;
-    width: 25%;
+    width: 33%;
     display: inline-block;
     height: 80rpx;
     line-height: 80rpx;

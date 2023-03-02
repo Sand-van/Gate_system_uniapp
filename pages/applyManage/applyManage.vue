@@ -7,12 +7,12 @@
     </scroll-view>
 
     <view v-show="showModeSelect == 0">
-      <applyTable></applyTable>
-      <uni-fab horizontal="right" vertical="bottom" @trigger="addApply"></uni-fab>
+      <applyTable ref="applyTable"></applyTable>
+      <uni-fab horizontal="right" vertical="bottom" @fabClick="addApply"></uni-fab>
     </view>
 
     <view v-show="showModeSelect == 1">
-      <applyManageTable></applyManageTable>
+      <applyManageTable ref="applyManageTable"></applyManageTable>
     </view>
 
   </view>
@@ -25,6 +25,13 @@
   export default {
     mounted() {
       this.loginUserType = uni.getStorageSync('userType')
+    },
+    onPullDownRefresh() {
+      this.$refs.applyTable.getPage()
+      this.$refs.applyManageTable.getPage()
+      setTimeout(function() {
+        uni.stopPullDownRefresh()
+      }, 1000)
     },
     data() {
       return {
@@ -42,7 +49,9 @@
     },
     methods: {
       addApply() {
-
+        uni.navigateTo({
+          url: '/pages/applyAdd/applyAdd'
+        })
       },
       onTabTap(e) {
         let index = e.target.dataset.current || e.currentTarget.dataset.current;
