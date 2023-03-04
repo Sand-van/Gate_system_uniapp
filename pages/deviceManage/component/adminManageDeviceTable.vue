@@ -23,7 +23,7 @@
         </uni-td>
         <uni-td align="center">
           <view class="uni-group">
-            <button class="uni-button" size="mini" type="primary">详情</button>
+            <button class="uni-button" size="mini" type="primary" @click="jumpToDeviceDetail(item.deviceId)">详情</button>
             <button class="uni-button" size="mini" type="warn">删除</button>
           </view>
         </uni-td>
@@ -69,6 +69,11 @@
         this.searchUserName = ''
         this.getPage()
       },
+      jumpToDeviceDetail(deviceId) {
+        uni.navigateTo({
+          url: '/pages/deviceDetail/deviceDetail?deviceId=' + deviceId
+        })
+      }
     },
   }
 </script>

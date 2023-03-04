@@ -12,8 +12,8 @@ export function getRecordsPage(pageInfo) {
       'queryName': pageInfo.searchUserName,
       'queryAccount': pageInfo.searchUserAccount,
       'queryDeviceName': pageInfo.searchDeviceName,
-      'beginTime': pageInfo.searchBeginTime,
-      'endTime': pageInfo.searchEndTime
+      'beginTime': pageInfo.beginTime,
+      'endTime': pageInfo.endTime
     }
   })
 }

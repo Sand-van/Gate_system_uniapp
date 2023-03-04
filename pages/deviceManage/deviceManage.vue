@@ -1,7 +1,5 @@
 <template>
   <view>
-    <button @click="loginUser">test1</button>
-
     <scroll-view scroll-x="true">
       <view v-for="(item,index) in showModeList" :key="item.id" class="tabName" :data-current="index" @click="onTabTap">
         <text class="tabName_text" :class="showModeSelect == index?'active_text':''">{{item.name}}</text>
@@ -22,10 +20,13 @@
       </swiper-item>
     </swiper> -->
     <view v-show="showModeSelect == 1">
-      <superAdminManageDeviceTable v-if="loginUserType == '3'" ref="superAdminManageDeviceTable">
-      </superAdminManageDeviceTable>
-      <adminManageDeviceTable v-if="loginUserType == '2'" ref="adminManageDeviceTable">
+      <view v-if="loginUserType != '1'">
+        <superAdminManageDeviceTable v-if="loginUserType == '3'" ref="superAdminManageDeviceTable">
+        </superAdminManageDeviceTable>
+        <adminManageDeviceTable v-if="loginUserType == '2'" ref="adminManageDeviceTable">
         </adminManageDeviceTable>
+      </view>
+      <text v-else>没有权限</text>
     </view>
 
     <view v-show="showModeSelect == 0">
@@ -45,7 +46,7 @@
       adminManageDeviceTable,
       userAuthorityDeviceTable,
     },
-    mounted() {
+    onLoad() {
       this.loginUserType = uni.getStorageSync('userType')
     },
     onPullDownRefresh() {
@@ -89,17 +90,6 @@
         let index = e.target.current || e.detail.current; // 获取到当前移动到第几个
         this.switchTab(index);
       },
-
-      async loginUser() {
-        const userData = {
-          account: '123456',
-          password: '123456'
-        }
-        const res = await this.$API.user.login(userData)
-        uni.setStorageSync('token', res.token)
-        uni.setStorageSync('userId', res.data.id)
-        uni.setStorageSync('userType', res.data.type)
-      }
     }
   }
 </script>

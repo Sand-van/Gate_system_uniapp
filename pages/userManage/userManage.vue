@@ -1,7 +1,10 @@
 <template>
-  <view>
+  <view v-if="loginUserType == '3'">
     <userList ref="userList"></userList>
     <uni-fab horizontal="right" vertical="bottom" @trigger="addUser"></uni-fab>
+  </view>
+  <view v-else>
+    <text>没有权限</text>
   </view>
 
 </template>
@@ -13,6 +16,12 @@
     components: {
       userList
     },
+    onLoad() {
+      this.loginUserType = uni.getStorageSync('userType')
+    },
+    onShow() {
+      this.loginUserType = uni.getStorageSync('userType')
+    },
     onPullDownRefresh() {
       this.$refs.userList.getPage()
       
@@ -22,7 +31,7 @@
     },
     data() {
       return {
-
+        loginUserType: ''
       }
     },
     methods: {

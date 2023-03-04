@@ -12,7 +12,8 @@
     </view>
 
     <view v-show="showModeSelect == 1">
-      <applyManageTable ref="applyManageTable"></applyManageTable>
+      <applyManageTable ref="applyManageTable" v-if="loginUserType != '1'"></applyManageTable>
+      <text v-else>没有权限</text>
     </view>
 
   </view>
@@ -23,7 +24,7 @@
   import applyManageTable from './component/applyManageTable.vue'
 
   export default {
-    mounted() {
+    onLoad() {
       this.loginUserType = uni.getStorageSync('userType')
     },
     onPullDownRefresh() {
@@ -44,7 +45,7 @@
         }],
 
         showModeSelect: 0,
-        loginUserType: '1',
+        loginUserType: '',
       }
     },
     methods: {

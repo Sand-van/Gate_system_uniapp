@@ -10,7 +10,8 @@
       <deviceInfo :deviceId='deviceId' ref="deviceInfo"></deviceInfo>
     </view>
     <view v-show="showModeSelect == 1">
-      <deviceManagerTable :deviceId='deviceId' ref="deviceManagerTable"></deviceManagerTable>
+      <deviceManagerTable v-if="nowLoginUserType == '3'" :deviceId='deviceId' ref="deviceManagerTable"></deviceManagerTable>
+      <text v-else>没有权限</text>
     </view>
     <view v-show="showModeSelect == 2">
       <devicePermissionTable :deviceId='deviceId' ref="devicePermissionTable"></devicePermissionTable>
@@ -30,6 +31,7 @@
   export default {
     onLoad: function(option) {
       this.deviceId = option.deviceId
+      this.nowLoginUserType = uni.getStorageSync('userType')
     },
     onPullDownRefresh() {
       this.$refs.deviceInfo.getDeviceInfo(this.deviceId)
@@ -44,6 +46,7 @@
     data() {
       return {
         deviceId: '',
+        nowLoginUserType: '',
         showModeList: [{
           name: '信息',
           id: 0

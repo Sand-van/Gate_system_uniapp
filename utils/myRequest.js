@@ -1,3 +1,7 @@
+import {
+  login
+} from "../api/user";
+
 const BASE_URL = 'http://10.73.128.31:8080'
 
 /*
@@ -86,6 +90,14 @@ export default function myRequest(param) {
             title: res.data.msg,
             icon: 'none'
           });
+          // relogin()
+          // 重新登录
+          setTimeout(function() {
+            uni.reLaunch({
+              url: '/pages/login/login'
+            })
+          }, 1000)
+
           return;
         }
 
@@ -96,7 +108,7 @@ export default function myRequest(param) {
       //请求失败
       fail: (err) => {
         uni.showToast({
-          title: "" + err.data.msg,
+          title: "服务器连接失败，请连接到校园网",
           icon: 'none'
         });
         reject(err.data);
@@ -104,4 +116,16 @@ export default function myRequest(param) {
     })
   })
 
+}
+
+// 将密码存储在本地是否过于危险？自动从新登录暂且不使用
+function relogin() {
+  const data = {
+    account: uni.getStorageInfoSync('account'),
+    password: uni.getStorageInfoSync('password')
+  }
+  const res = login(data)
+  uni.setStorageSync('token', res.token)
+  uni.setStorageSync('userId', res.data.id)
+  uni.setStorageSync('userType', res.data.type)
 }
