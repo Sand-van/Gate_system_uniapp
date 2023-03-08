@@ -23,13 +23,19 @@
         </uni-td>
         <uni-td align="center">
           <view class="uni-group">
-            <button class="uni-button" size="mini" type="primary">开启</button>
+            <button class="uni-button" size="mini" type="primary" @click="openDoor(item.deviceId)">开启</button>
           </view>
         </uni-td>
       </uni-tr>
     </uni-table>
     <view class="uni-pagination-box">
       <uni-pagination show-icon :page-size="pageSize" :current="page" :total="total" @change="getPageByPagination" />
+    </view>
+    <view>
+      <!-- 提示信息弹窗 -->
+      <uni-popup ref="message" type="message">
+        <uni-popup-message :type="msgData.type" :message="msgData.msg" :duration="2000"></uni-popup-message>
+      </uni-popup>
     </view>
   </view>
 </template>
@@ -45,7 +51,11 @@
         pageSize: 10,
         total: '',
         searchDeviceName: '',
-        deviceDataList: []
+        deviceDataList: [],
+        msgData: {
+          msg: '',
+          type: '',
+        }
       }
     },
     methods: {
@@ -71,6 +81,18 @@
         this.searchUserName = ''
         this.getPage()
       },
+      async openDoor(deviceId) {
+        let res = await this.$API.deviceManage.openDevice(deviceId)
+        if (res.code == 200){
+          this.msgData.msg = '开启成功'
+          this.msgData.type = 'success'
+          this.$refs.message.open()
+        } else {
+          this.msgData.msg = '开启失败'
+          this.msgData.type = 'error'
+          this.$refs.message.open()
+        }
+      }
     },
   }
 </script>

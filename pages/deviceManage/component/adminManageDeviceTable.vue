@@ -23,6 +23,7 @@
         </uni-td>
         <uni-td align="center">
           <view class="uni-group">
+            <button class="uni-button" size="mini" type="default" @click="openDoor(item.id)">开门</button>
             <button class="uni-button" size="mini" type="primary" @click="jumpToDeviceDetail(item.deviceId)">详情</button>
             <button class="uni-button" size="mini" type="warn">删除</button>
           </view>
@@ -31,6 +32,12 @@
     </uni-table>
     <view class="uni-pagination-box">
       <uni-pagination show-icon :page-size="pageSize" :current="page" :total="total" @change="getPageByPagination" />
+    </view>
+    <view>
+      <!-- 提示信息弹窗 -->
+      <uni-popup ref="message" type="message">
+        <uni-popup-message :type="msgData.type" :message="msgData.msg" :duration="2000"></uni-popup-message>
+      </uni-popup>
     </view>
   </view>
 </template>
@@ -46,7 +53,11 @@
         pageSize: 10,
         total: '',
         searchDeviceName: '',
-        deviceDataList: []
+        deviceDataList: [],
+        msgData: {
+          msg: '',
+          type: '',
+        }
       }
     },
     methods: {
@@ -73,6 +84,18 @@
         uni.navigateTo({
           url: '/pages/deviceDetail/deviceDetail?deviceId=' + deviceId
         })
+      },
+      async openDoor(deviceId) {
+        let res = await this.$API.deviceManage.openDevice(deviceId)
+        if (res.code == 200) {
+          this.msgData.msg = '开启成功'
+          this.msgData.type = 'success'
+          this.$refs.message.open()
+        } else {
+          this.msgData.msg = '开启失败'
+          this.msgData.type = 'error'
+          this.$refs.message.open()
+        }
       }
     },
   }
