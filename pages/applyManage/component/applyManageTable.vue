@@ -27,14 +27,20 @@
         </uni-td>
         <uni-td align="center">
           <view class="uni-group">
-            <button class="uni-button" size="mini" type="primary">同意</button>
-            <button class="uni-button" size="mini" type="warn">拒绝</button>
+            <button class="uni-button" size="mini" type="primary" @click="acceptApply(item.id)">同意</button>
+            <button class="uni-button" size="mini" type="warn" @click="deleteApply(item.id)">拒绝</button>
           </view>
         </uni-td>
       </uni-tr>
     </uni-table>
     <view class="uni-pagination-box">
       <uni-pagination show-icon :page-size="pageSize" :current="page" :total="total" @change="getPageByPagination" />
+    </view>
+    <view>
+      <!-- 提示信息弹窗 -->
+      <uni-popup ref="message" type="message">
+        <uni-popup-message :type="msgData.type" :message="msgData.msg" :duration="2000"></uni-popup-message>
+      </uni-popup>
     </view>
   </view>
 </template>
@@ -50,7 +56,11 @@
         pageSize: 10,
         total: '',
         searchDeviceName: '',
-        applyList: []
+        applyList: [],
+        msgData: {
+          msg: '',
+          type: '',
+        }
       }
     },
     methods: {
@@ -74,6 +84,22 @@
         this.searchUserName = ''
         this.getPage()
       },
+      async acceptApply(applyId) {
+        let res = await this.$API.userApply.acceptApply(applyId)
+        if (res.code == 200) {
+          this.msgData.msg = '添加成功'
+          this.msgData.type = 'success'
+          this.$refs.message.open()
+        }
+      },
+      async deleteApply(applyId) {
+        let res = await this.$API.userApply.deleteApply(applyId)
+        if (res.code == 200) {
+          this.msgData.msg = '删除成功'
+          this.msgData.type = 'success'
+          this.$refs.message.open()
+        }
+      }
     },
   }
 </script>
