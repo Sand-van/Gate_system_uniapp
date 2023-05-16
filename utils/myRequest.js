@@ -2,34 +2,12 @@ import {
   login
 } from "../api/user";
 
-const BASE_URL = 'http://10.73.128.31:8080'
-
-/*
-export const myRequest = (options) => {
-  return new Promise((resolve, reject) => {
-    uni.request({
-      url: BASE_URL + options.url,
-      method: options.method,
-      data: options.data || {},
-      header: {
-        token: uni.getStorageSync('token')
-      },
-      timeout: 5000,
-      success: (res) => {
-
-        resolve(res)
-      },
-      fail: (err) => {
-
-        reject(err)
-      }
-    })
-  })
-}
-*/
-
 export default function myRequest(param) {
-
+  var baseUrl = uni.getStorageSync('base_url')
+  if ((baseUrl == '') || (typeof baseUrl == 'undefined')) {
+    uni.setStorageSync('base_url', 'http://10.73.128.31:8080')
+    baseUrl = 'http://10.73.128.31:8080'
+  }
   // 请求参数
   var url = param.url,
     method = param.method,
@@ -38,7 +16,7 @@ export default function myRequest(param) {
     header = {},
 
     //拼接完整请求地址
-    requestUrl = BASE_URL + url;
+    requestUrl = baseUrl + url;
 
   //请求方式:GET或POST(POST需配置
   // header: {'content-type' : "application/x-www-form-urlencoded"},)
@@ -67,6 +45,7 @@ export default function myRequest(param) {
       data: data,
       method: method,
       header: header,
+      timeout: 5000,
       success: (res) => {
         // 判断 请求api 格式是否正确
         if (res.statusCode && res.statusCode != 200) {

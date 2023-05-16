@@ -13,10 +13,19 @@
           <uni-easyinput prefixIcon='locked' trim="all" v-model="loginData.password" placeholder="密码" type="password">
           </uni-easyinput>
         </uni-forms-item>
-        <button class="uni-button" size="default" type="default" @click="loginUser">登录</button>
+        <button class="uni-button" size="default" type="primary" @click="loginUser">登录</button>
 
       </uni-forms>
     </uni-card>
+    <view>
+      <button type="default" style="width: 25%;" @click="showForm">设置</button>
+    </view>
+    <view>
+      <uni-popup ref="inputDialog" type="dialog">
+        <uni-popup-dialog ref="inputClose" mode="input" :value="baseUrl" title="编辑服务器地址" placeholder="请输入内容"
+          @confirm="setUrl"></uni-popup-dialog>
+      </uni-popup>
+    </view>
   </view>
 </template>
 
@@ -27,7 +36,8 @@
         loginData: {
           account: '',
           password: ''
-        }
+        },
+        baseUrl: '',
       }
     },
     methods: {
@@ -47,6 +57,19 @@
         } else {
           console.log('fail')
         }
+      },
+      showForm() {
+        var baseUrl = uni.getStorageSync('base_url')
+        if ((baseUrl == '') || (typeof baseUrl == 'undefined')) {
+          uni.setStorageSync('base_url', 'http://10.73.128.31:8080')
+        }
+        this.baseUrl = baseUrl
+        this.$refs.inputDialog.open()
+      },
+      setUrl(url) {
+        console.log('set Url: ' + url)
+        uni.setStorageSync('base_url', url)
+        this.$refs.inputDialog.close()
       }
     }
   }

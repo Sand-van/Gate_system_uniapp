@@ -19,7 +19,6 @@
     },
     onShow() {
       this.loginUserId = uni.getStorageSync('userId')
-      console.log(this.loginUserId)
     },
     methods: {
       logoutUser(){
