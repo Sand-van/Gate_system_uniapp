@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { getInfo } from '../../api/user'
   export default {
     data() {
       return {
@@ -39,6 +40,9 @@
         },
         baseUrl: '',
       }
+    },
+    onLoad() {
+      // this.getInfo()
     },
     methods: {
       async loginUser() {
@@ -56,6 +60,15 @@
           })
         } else {
           console.log('fail')
+        }
+      },
+      async getInfo() {
+        let res = await this.$API.user.getInfo(uni.getStorageInfoSync('token'))
+        if (res.code == 200)
+        {
+          uni.switchTab({
+            url: '/pages/me/me'
+          })
         }
       },
       showForm() {
